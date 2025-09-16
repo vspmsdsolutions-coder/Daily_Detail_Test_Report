@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+            <html lang="zh-TW">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>VS Schedule Tool - 1080p Test Report</title>
+                <style>
+                    
+                    :root {
+                        --primary-color: #667eea;
+                        --secondary-color: #764ba2;
+                        --accent-color: #4a90e2;
+                        --text-dark: #1a365d;
+                        --bg-light: #f8fafc;
+                        --border-color: #e8ecf0;
+                        --success-bg: #E8F5E8;
+                        --success-text: #22543D;
+                        --error-bg: #FFE8E8;
+                        --error-text: #C53030;
+                    }
+
+                    * { 
+                        margin: 0; 
+                        padding: 0; 
+                        box-sizing: border-box; 
+                    }
+
+                    body { 
+                        font-family: 'Segoe UI', 'Microsoft JhengHei', 'Arial', sans-serif; 
+                        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); 
+                        min-height: 100vh; 
+                        padding: 20px;
+                        line-height: 1.5;
+                    }
+
+                    .container { 
+                        background: white; 
+                        border-radius: 16px; 
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+                        overflow: hidden; 
+                        max-width: 1800px;
+                        margin: 0 auto; 
+                    }
+
+                    .header { 
+                        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); 
+                        color: white; 
+                        text-align: center; 
+                        padding: 30px 25px; 
+                    }
+
+                    .title { 
+                        font-size: 36px; 
+                        font-weight: 700; 
+                        margin-bottom: 12px; 
+                    }
+
+                    .subtitle { 
+                        font-size: 18px; 
+                        opacity: 0.9; 
+                        margin-bottom: 16px; 
+                    }
+
+                    .product-info { 
+                        background: rgba(255, 255, 255, 0.1); 
+                        border-radius: 12px; 
+                        padding: 20px; 
+                        margin-top: 20px; 
+                        border: 1px solid rgba(255, 255, 255, 0.2); 
+                    }
+
+                    .product-info h3 { 
+                        font-size: 20px; 
+                        font-weight: 600; 
+                        margin-bottom: 12px; 
+                        color: #ffffff; 
+                    }
+
+                    .product-details { 
+                        display: grid; 
+                        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+                        gap: 15px; 
+                        font-size: 14px; 
+                    }
+
+                    .product-detail-item { 
+                        background: rgba(255, 255, 255, 0.05); 
+                        padding: 12px; 
+                        border-radius: 8px; 
+                    }
+
+                    .product-detail-label { 
+                        font-weight: 600; 
+                        color: #e8f4fd; 
+                        font-size: 12px; 
+                        text-transform: uppercase; 
+                        letter-spacing: 0.5px; 
+                    }
+
+                    .product-detail-value { 
+                        color: #ffffff; 
+                        font-weight: 500; 
+                        margin-top: 2px; 
+                        font-size: 14px;
+                    }
+
+                    .summary-section { 
+                        padding: 25px 20px; 
+                        background: white; 
+                        color: black; 
+                        border: 3px solid var(--text-dark); 
+                    }
+
+                    .summary-grid { 
+                        display: grid; 
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+                        gap: 20px; 
+                        margin-top: 20px; 
+                    }
+
+                    .summary-card { 
+                        background: white; 
+                        border: 3px solid var(--text-dark); 
+                        color: black; 
+                        padding: 18px; 
+                        border-radius: 10px; 
+                        text-align: center;
+                    }
+
+                    .summary-label { 
+                        font-size: 14px; 
+                        color: #333333; 
+                        margin-bottom: 8px; 
+                        font-weight: 500; 
+                    }
+
+                    .summary-value { 
+                        font-size: 20px; 
+                        font-weight: 600; 
+                        color: black; 
+                    }
+
+                    .table-container { 
+                        padding: 20px; 
+                    }
+
+                    /* 🎯 易於調整的表格設定 - 1920x1080專用 */
+                    table { 
+                        width: 100%; 
+                        table-layout: fixed;
+                        border-collapse: collapse; 
+                        background: white; 
+                        border-radius: 8px;
+                        overflow: hidden;
+                    }
+
+                    th { 
+                        background: linear-gradient(135deg, var(--accent-color) 0%, #357abd 100%); 
+                        color: white; 
+                        font-weight: 600; 
+                        padding: 15px 8px;  /* 減少左右padding確保置中 */
+                        text-align: center !important;  /* 強制置中 */
+                        vertical-align: middle;  /* 垂直也置中 */
+                        border: 1px solid #ccc; 
+                        font-size: 13px; 
+                        white-space: nowrap; 
+                        font-family: 'Segoe UI', 'Microsoft JhengHei', 'Arial', sans-serif;  /* 統一字型 */
+                        letter-spacing: 0.5px;  /* 增加字母間距 */
+                    }
+
+                    td { 
+                        padding: 12px 10px; 
+                        border: 1px solid var(--border-color); 
+                        text-align: left; 
+                        font-size: 12px; 
+                        line-height: 1.4; 
+                        overflow: hidden; 
+                        text-overflow: ellipsis; 
+                        white-space: nowrap; 
+                        position: relative;
+                        cursor: help;
+                    }
+
+                    /* 🔧 1920x1080 欄位寬度設定 - 方便調整 */
+                    .col-tc-no { 
+                        width: 4%; 
+                        min-width: 60px; 
+                        text-align: center;  /* TC編號置中 */
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-tc-name { 
+                        width: 20%; 
+                        min-width: 200px; 
+                        text-align: left;    /* 名稱靠左 */
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-cmd { 
+                        width: 8%; 
+                        min-width: 80px; 
+                        text-align: center;  /* CMD置中 */
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-picture-name { 
+                        width: 12%; 
+                        min-width: 120px; 
+                        text-align: left;    /* 圖片名稱靠左 */
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-output-string { 
+                        width: 12%; 
+                        min-width: 120px; 
+                        text-align: left;    /* 輸出字串靠左 */
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-display-index { 
+                        width: 10%; 
+                        min-width: 100px; 
+                        text-align: center;  /* 顯示索引置中 */
+                        font-weight: 600;
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-vcp-code { 
+                        width: 8%; 
+                        min-width: 80px; 
+                        text-align: center;  /* VCP代碼置中 */
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-expected-value { 
+                        width: 8%; 
+                        min-width: 80px; 
+                        text-align: center;  /* 期望值置中 */
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-get-value { 
+                        width: 8%; 
+                        min-width: 80px; 
+                        text-align: center;  /* 取得值置中 */
+                        font-weight: 600;
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-benchmark-path { 
+                        width: 8%; 
+                        min-width: 80px; 
+                        text-align: left;    /* 路徑靠左 */
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-checked-path { 
+                        width: 8%; 
+                        min-width: 80px; 
+                        text-align: left;    /* 路徑靠左 */
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    .col-test-result { 
+                        width: 6%; 
+                        min-width: 70px; 
+                        text-align: center;  /* 結果置中 */
+                        font-weight: 600;
+                        font-family: 'Consolas', 'Courier New', monospace;
+                    }
+
+                    /* 懸停提示 */
+                    td[title]:hover::after {
+                        content: attr(title);
+                        position: absolute;
+                        bottom: 100%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: rgba(0, 0, 0, 0.9);
+                        color: white;
+                        padding: 8px 12px;
+                        border-radius: 6px;
+                        font-size: 11px;
+                        white-space: pre-wrap;
+                        word-wrap: break-word;
+                        max-width: 300px;
+                        min-width: 150px;
+                        z-index: 1000;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        pointer-events: none;
+                    }
+
+                    td[title]:hover::before {
+                        content: '';
+                        position: absolute;
+                        bottom: 100%;
+                        left: 50%;
+                        transform: translateX(-50%) translateY(100%);
+                        border: 6px solid transparent;
+                        border-top: 6px solid rgba(0, 0, 0, 0.9);
+                        z-index: 1001;
+                        pointer-events: none;
+                    }
+
+                    .pass-cell { 
+                        background-color: var(--success-bg) !important; 
+                        color: var(--success-text) !important; 
+                        font-weight: 600 !important; 
+                        text-align: center !important; 
+                        border-radius: 4px; 
+                    }
+
+                    .fail-cell { 
+                        background-color: var(--error-bg) !important; 
+                        color: var(--error-text) !important; 
+                        font-weight: 600 !important; 
+                        text-align: center !important; 
+                        border-radius: 4px; 
+                    }
+
+                    tbody tr:nth-child(even) { background-color: var(--bg-light); }
+                    tbody tr:nth-child(odd) { background-color: white; }
+                    tbody tr:hover { 
+                        background: #e3f2fd; 
+                        transform: scale(1.002); 
+                        transition: all 0.2s ease; 
+                        z-index: 10; 
+                        position: relative; 
+                    }
+
+                    .footer { 
+                        background: #2c3e50; 
+                        color: white; 
+                        text-align: center; 
+                        padding: 25px; 
+                        font-size: 12px; 
+                    }
+
+                    /* 列印樣式 */
+                    @media print {
+                        body { background: white; padding: 0; font-size: 12pt; }
+                        .container { box-shadow: none; border-radius: 0; max-width: 100%; }
+                        table { font-size: 10pt; }
+                        th, td { padding: 4pt 6pt; font-size: 9pt; }
+                    }
+                
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h1 class="title">VS Schedule Tool - Detail Report</h1>
+                        <p class="subtitle">Unknown - Test Results Report - 2025/09/16 14:30:33</p>
+                        <div class="product-info">
+                            <h3>Test Related Information</h3>
+                            <div class="product-details">
+                                <div class="product-detail-item">
+                                    <div class="product-detail-label">Product Name</div>
+                                    <div class="product-detail-value">Unknown</div>
+                                </div>
+                                <div class="product-detail-item">
+                                    <div class="product-detail-label">Product Version</div>
+                                    <div class="product-detail-value">3.0.2.6</div>
+                                </div>
+                                <div class="product-detail-item">
+                                    <div class="product-detail-label">Operating System</div>
+                                    <div class="product-detail-value">macOS</div>
+                                </div>
+                                <div class="product-detail-item">
+                                    <div class="product-detail-label">OS Version</div>
+                                    <div class="product-detail-value">Sequoia 15.5</div>
+                                </div>
+                                <div class="product-detail-item">
+                                    <div class="product-detail-label">Processer</div>
+                                    <div class="product-detail-value">M4 Pro</div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="summary-section">
+                        <div class="summary-grid">
+                            <div class="summary-card">
+                                <div class="summary-label">Total Records</div>
+                                <div class="summary-value">7</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-label">Export Time</div>
+                                <div class="summary-value">14:30:33</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-label">File Name</div>
+                                <div class="summary-value">Test_Report_20250916_143033.html</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th class="col-tc-no">No.</th><th class="col-tc-name">Name</th><th class="col-cmd">CMD</th><th class="col-picture-name">Picture</th><th class="col-output-string">Output</th><th class="col-display-index">Display</th><th class="col-vcp-code">VCP Code</th><th class="col-expected-value">Expected</th><th class="col-get-value">Get Value</th><th class="col-benchmark-path">Benchmark</th><th class="col-checked-path">Checked</th><th class="col-test-result">Result</th>
+                                </tr>
+                            </thead>
+                            <tbody><tr><td class="col-tc-no"></td><td class="col-tc-name"></td><td class="col-cmd" title="_GetInfo">_GetInfo</td><td class="col-picture-name"></td><td class="col-output-string"></td><td class="col-display-index"></td><td class="col-vcp-code"></td><td class="col-expected-value"></td><td class="col-get-value" title="{&#x27;ProductName&#x27;: &#x27;Unknown&#x27;, &#x27;ProductVersion&#x27;: &#x27;3.0.2.6&#x27;, &#x27;FileVersion&#x27;: &#x27;3.0.2.6&#x27;, &#x27;CompanyName&#x27;: &#x27;&#x27;, &#x27;FileDescription&#x27;: &#x27;&#x27;}">{'ProductName': 'Unknown', 'ProductVersion': '3.0.2.6', 'FileVersion': '3.0.2.6', 'CompanyName': '', 'FileDescription': ''}</td><td class="col-benchmark-path"></td><td class="col-checked-path" title="/Applications/vDisplayManager.app">vDisplayManager.app</td><td class="col-test-result" title=""></td></tr><tr><td class="col-tc-no" title="1">1</td><td class="col-tc-name" title="all cmd test">all cmd test</td><td class="col-cmd" title="_SetPivot">_SetPivot</td><td class="col-picture-name"></td><td class="col-output-string"></td><td class="col-display-index" title="0">0</td><td class="col-vcp-code"></td><td class="col-expected-value" title="2">2</td><td class="col-get-value" title="2">2</td><td class="col-benchmark-path"></td><td class="col-checked-path"></td><td class="col-test-result pass-cell" title="PASS">PASS</td></tr><tr><td class="col-tc-no"></td><td class="col-tc-name"></td><td class="col-cmd" title="_GetPivotResult">_GetPivotResult</td><td class="col-picture-name"></td><td class="col-output-string"></td><td class="col-display-index" title="0">0</td><td class="col-vcp-code"></td><td class="col-expected-value" title="180">180</td><td class="col-get-value" title="180">180</td><td class="col-benchmark-path"></td><td class="col-checked-path"></td><td class="col-test-result pass-cell" title="PASS">PASS</td></tr><tr><td class="col-tc-no"></td><td class="col-tc-name"></td><td class="col-cmd" title="_SetPivot">_SetPivot</td><td class="col-picture-name"></td><td class="col-output-string"></td><td class="col-display-index" title="0">0</td><td class="col-vcp-code"></td><td class="col-expected-value" title="0">0</td><td class="col-get-value" title="0">0</td><td class="col-benchmark-path"></td><td class="col-checked-path"></td><td class="col-test-result pass-cell" title="PASS">PASS</td></tr><tr><td class="col-tc-no"></td><td class="col-tc-name"></td><td class="col-cmd" title="_GetPivotResult">_GetPivotResult</td><td class="col-picture-name"></td><td class="col-output-string"></td><td class="col-display-index" title="0">0</td><td class="col-vcp-code"></td><td class="col-expected-value" title="0">0</td><td class="col-get-value" title="0">0</td><td class="col-benchmark-path"></td><td class="col-checked-path"></td><td class="col-test-result pass-cell" title="PASS">PASS</td></tr><tr><td class="col-tc-no"></td><td class="col-tc-name"></td><td class="col-cmd" title="_shot">_shot</td><td class="col-picture-name" title="111_AAA">111_AAA</td><td class="col-output-string"></td><td class="col-display-index"></td><td class="col-vcp-code"></td><td class="col-expected-value"></td><td class="col-get-value"></td><td class="col-benchmark-path"></td><td class="col-checked-path"></td><td class="col-test-result" title=""></td></tr><tr><td class="col-tc-no"></td><td class="col-tc-name"></td><td class="col-cmd" title="_shot">_shot</td><td class="col-picture-name" title="222_BBB">222_BBB</td><td class="col-output-string"></td><td class="col-display-index"></td><td class="col-vcp-code"></td><td class="col-expected-value"></td><td class="col-get-value"></td><td class="col-benchmark-path"></td><td class="col-checked-path"></td><td class="col-test-result" title=""></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="footer">
+                        <p>📊 Generated by VS Schedule Tool | 🕒 2025/09/16 14:30:33 | 📁 7 Records</p>
+                        <p>🔧 Unknown v3.0.2.6 Test Report</p>
+                        <p style="margin-top: 5px; opacity: 0.8;">🖥️ Optimized for 1920x1080 resolution</p>
+                    </div>
+                </div>
+            </body>
+            </html>
